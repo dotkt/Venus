@@ -1,28 +1,21 @@
-# Compiled Object files
-*.slo
-*.lo
-*.o
-*.obj
-
-# Precompiled Headers
-*.gch
-*.pch
-
-# Compiled Dynamic libraries
-*.so
-*.dylib
-*.dll
-
-# Fortran module files
-*.mod
-
-# Compiled Static libraries
-*.lai
-*.la
-*.a
-*.lib
-
-# Executables
-*.exe
-*.out
-*.app
+#compiled_temp_folds:
+m2/x64/
+x64/
+.vs/
+.vscode/
+Release/
+temp_files/
+*~
+.xlsx#
+*.iobj
+*.ipdb
+m2/generate_db_access_files/json.txt
+与界面端通信协议/.svn/
+M3R.FROM*.txt
+document/~$*
+小工具/LOG*.txt
+小工具/mm.db
+m2/LOG*.txt
+m2/*.db
+m2/*.dmp
+*.dmp
