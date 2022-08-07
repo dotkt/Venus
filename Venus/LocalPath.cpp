@@ -1,19 +1,19 @@
-#include "StdAfx.h"
+ï»¿#include "StdAfx.h"
 #include "LocalPath.h"
 #include <shlwapi.h>
 #pragma comment(lib,"Shlwapi.lib")
 
-// ¹¹Ôì
+// æ„é€ 
 LocalPath::LocalPath(void)
 {
 	//InitIndex();
 	strLocalPath = GetExePath();
 
-	// È·±£lnkÎÄ¼ş¼Ğ´æÔÚ
+	// ç¡®ä¿lnkæ–‡ä»¶å¤¹å­˜åœ¨
 	CheckFolderExist(strLocalPath);
 }
 
-// Îö¹¹
+// ææ„
 LocalPath::~LocalPath(void)
 {
 }
@@ -28,20 +28,20 @@ string LocalPath::GetExePath(void)
 {
 	char szFilePath[MAX_PATH + 1]={0};
 	GetModuleFileNameA(NULL, szFilePath, MAX_PATH);
-	(strrchr(szFilePath, '\\'))[0] = 0; // É¾³ıÎÄ¼şÃû£¬Ö»»ñµÃÂ·¾¶×Ö´®
+	(strrchr(szFilePath, '\\'))[0] = 0; // åˆ é™¤æ–‡ä»¶åï¼Œåªè·å¾—è·¯å¾„å­—ä¸²
 	string path = szFilePath;
 	return path + "\\lnk\\";
 }
 
-// ÎÄ¼ş¼ĞÊÇ·ñ´æÔÚ£¬²»´æÔÚ£¬´´½¨Ö®
+// æ–‡ä»¶å¤¹æ˜¯å¦å­˜åœ¨ï¼Œä¸å­˜åœ¨ï¼Œåˆ›å»ºä¹‹
 void LocalPath::CheckFolderExist(string lnkpath)
 {
 	if (PathFileExists(lnkpath.data()))
 	{
-		//´æÔÚ
+		//å­˜åœ¨
 		int a = 1;
 	}
-	else //²»´æÔÚ
+	else //ä¸å­˜åœ¨
 	{
 		CreateDirectory(lnkpath.data(), NULL);
 	}
@@ -49,7 +49,7 @@ void LocalPath::CheckFolderExist(string lnkpath)
 
 
 /** 
- * ×Ö·û´®s1ÊÇ·ñÒÔs2½áÊø 
+ * å­—ç¬¦ä¸²s1æ˜¯å¦ä»¥s2ç»“æŸ 
  */  
 int LocalPath::endsWith(char s1[],char s2[]){  
 	int len1 = strlen(s1);
@@ -70,9 +70,9 @@ int LocalPath::endsWith(char s1[],char s2[]){
 }
 
 void LocalPath::getFiles(string path, vector<ShortCut>& files) {
-	//ÎÄ¼ş¾ä±ú    
+	//æ–‡ä»¶å¥æŸ„    
 	long hFile = 0;    
-	//ÎÄ¼şĞÅÏ¢
+	//æ–‡ä»¶ä¿¡æ¯
 	struct _finddata_t fileinfo;    
 	string p;  
   
@@ -80,20 +80,22 @@ void LocalPath::getFiles(string path, vector<ShortCut>& files) {
 	{    
 		do{    
 			if ((fileinfo.attrib & _A_SUBDIR)) {    
-				// Ìø¹ı×ÓÄ¿Â¼
+				// è·³è¿‡å­ç›®å½•
 			}  
 			else
 			{
-				// Ö»¶ÁÈ¡lnkÎÄ¼ş
-				if ( endsWith(fileinfo.name, ".lnk"))
+				// åªè¯»å–lnkæ–‡ä»¶
+				//if ( endsWith(fileinfo.name, ".lnk"))
 				{
 					ShortCut shortCut;
-					char *lp = strstr(fileinfo.name, ".lnk");
+					//char *lp = strstr(fileinfo.name, ".lnk");
 					char tmp[MAX_PATH] = {0};
-					if (lp != NULL)
-					{
-						memcpy(tmp, fileinfo.name, lp-fileinfo.name);
-					}
+					//if (lp != NULL)
+					//{
+					//	memcpy(tmp, fileinfo.name, lp-fileinfo.name);
+					//}
+                    //memcpy(tmp, fileinfo.name, lp - fileinfo.name);
+                    strcpy(tmp, fileinfo.name);
 
 					shortCut.fileName = tmp;
 					shortCut.filePath = p.assign(path).append(fileinfo.name);
@@ -153,12 +155,12 @@ bool LocalPath::ReadShortcut(LPWSTR lpwLnkFile, LPSTR lpDescFile)
 
 
 
-// ³õÊ¼»¯±¾µØ±í
+// åˆå§‹åŒ–æœ¬åœ°è¡¨
 void LocalPath::InitIndex()
 {
 	index.clear();
 
-	// ³£ÓÃÏµÍ³×é¼ş
+	// å¸¸ç”¨ç³»ç»Ÿç»„ä»¶
 
 	index[";calc"] = "calc";
 	index[";cmd"] = "cmd";
@@ -180,7 +182,7 @@ void LocalPath::InitIndex()
 	for (auto iter=lnkfiles.begin(); iter!=lnkfiles.end(); iter++)
 	{
 		/*
-		// ´ÓlnkÖĞ¶ÁÈ¡ÎÄ¼şÊµ¼ÊÂ·¾¶
+		// ä»lnkä¸­è¯»å–æ–‡ä»¶å®é™…è·¯å¾„
 		wchar_t *lnk = CharToWchar(iter->filePath.c_str());
 		char szBuf[MAX_PATH];
 		ReadShortcut(lnk, szBuf);
@@ -191,7 +193,7 @@ void LocalPath::InitIndex()
 	}
 }
 
-// ×óÆ¥Åä¼üÖµ£¬µÃµ½ÓĞĞ§¼üÖµÁĞ±í
+// å·¦åŒ¹é…é”®å€¼ï¼Œå¾—åˆ°æœ‰æ•ˆé”®å€¼åˆ—è¡¨
 bool LocalPath::FindIndex(CString key, vector<CString> &matchs)
 {
 	key.MakeLower();
@@ -211,7 +213,7 @@ bool LocalPath::FindIndex(CString key, vector<CString> &matchs)
 	return true;
 }
 
-// ¾«È·»ñÈ¡Öµ
+// ç²¾ç¡®è·å–å€¼
 CString LocalPath::GetLocalPath(CString key)
 {
 	return index[key];
